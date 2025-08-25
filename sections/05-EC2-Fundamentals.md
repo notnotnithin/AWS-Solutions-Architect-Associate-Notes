@@ -1,43 +1,47 @@
 # EC2: Virtual Machines
 
 - [EC2: Virtual Machines](#ec2-virtual-machines)
-	- [What is Amazon EC2?](#what-is-amazon-ec2)
-		- [EC2 Sizing \& Configuration Options](#ec2-sizing--configuration-options)
-		- [EC2 User Data](#ec2-user-data)
-		- [EC2 instance types: example](#ec2-instance-types-example)
-		- [EC2 Instance Types - Overview](#ec2-instance-types---overview)
-			- [General Purpose Instances](#general-purpose-instances)
-			- [Compute Optimized Instances](#compute-optimized-instances)
-			- [Memory Optimized Instances](#memory-optimized-instances)
-			- [Storage Optimized Instances](#storage-optimized-instances)
-		- [EC2 Instance Types: Example](#ec2-instance-types-example-1)
-	- [Introduction to Security Groups](#introduction-to-security-groups)
-		- [Common Use Cases](#common-use-cases)
-	- [Security Groups Deeper Dive](#security-groups-deeper-dive)
-		- [Security Groups Diagram](#security-groups-diagram)
-		- [Examples of Security Group Rules](#examples-of-security-group-rules)
-		- [Good to Know](#good-to-know)
-	- [Referencing other security groups diagram](#referencing-other-security-groups-diagram)
-	- [Classic Ports to Know](#classic-ports-to-know)
-	- [SSH Summary Table](#ssh-summary-table)
-	- [How to SSH into your EC2 Instance](#how-to-ssh-into-your-ec2-instance)
-		- [Linux / Mac OS X:](#linux--mac-os-x)
-	- [EC2 Instance Connect](#ec2-instance-connect)
-	- [EC2 Instance Roles:](#ec2-instance-roles)
-	- [EC2 Instance Purchasing Options](#ec2-instance-purchasing-options)
-		- [EC2 On Demand:](#ec2-on-demand)
-		- [EC2 Reserved Instances](#ec2-reserved-instances)
-		- [EC2 Savings Plans](#ec2-savings-plans)
-		- [EC2 Spot Instances](#ec2-spot-instances)
-		- [EC2 Dedicated Hosts](#ec2-dedicated-hosts)
-		- [EC2 Dedicated Instances](#ec2-dedicated-instances)
-		- [EC2 Capacity Reservations](#ec2-capacity-reservations)
-	- [Which purchasing option is right for my use case?](#which-purchasing-option-is-right-for-my-use-case)
-		- [EC2 Instance Launch Types Comparison](#ec2-instance-launch-types-comparison)
-	- [Price Comparison Example – m4.large – us-east-1](#price-comparison-example--m4large--us-east-1)
-	- [AWS charges for IPv4 addresses](#aws-charges-for-ipv4-addresses)
-	- [Shared Responsibility Model for EC2](#shared-responsibility-model-for-ec2)
-	- [EC2 Section – Summary](#ec2-section--summary)
+  - [What is Amazon EC2?](#what-is-amazon-ec2)
+    - [EC2 Sizing \& Configuration Options](#ec2-sizing--configuration-options)
+    - [EC2 User Data](#ec2-user-data)
+    - [EC2 instance types: example](#ec2-instance-types-example)
+    - [EC2 Instance Types - Overview](#ec2-instance-types---overview)
+      - [General Purpose Instances](#general-purpose-instances)
+      - [Compute Optimized Instances](#compute-optimized-instances)
+      - [Memory Optimized Instances](#memory-optimized-instances)
+      - [Storage Optimized Instances](#storage-optimized-instances)
+    - [EC2 Instance Types: Example](#ec2-instance-types-example-1)
+  - [Introduction to Security Groups](#introduction-to-security-groups)
+    - [Common Use Cases](#common-use-cases)
+  - [Security Groups Deeper Dive](#security-groups-deeper-dive)
+    - [Security Groups Diagram](#security-groups-diagram)
+    - [Examples of Security Group Rules](#examples-of-security-group-rules)
+    - [Good to Know](#good-to-know)
+  - [Referencing other security groups diagram](#referencing-other-security-groups-diagram)
+  - [Classic Ports to Know](#classic-ports-to-know)
+  - [SSH Summary Table](#ssh-summary-table)
+  - [How to SSH into your EC2 Instance](#how-to-ssh-into-your-ec2-instance)
+    - [Linux / Mac OS X:](#linux--mac-os-x)
+  - [EC2 Instance Connect](#ec2-instance-connect)
+  - [EC2 Instance Roles:](#ec2-instance-roles)
+  - [EC2 Instance Purchasing Options](#ec2-instance-purchasing-options)
+    - [EC2 On Demand:](#ec2-on-demand)
+    - [EC2 Reserved Instances](#ec2-reserved-instances)
+    - [EC2 Savings Plans](#ec2-savings-plans)
+    - [EC2 Spot Instances](#ec2-spot-instances)
+    - [EC2 Dedicated Hosts](#ec2-dedicated-hosts)
+    - [EC2 Dedicated Instances](#ec2-dedicated-instances)
+    - [EC2 Capacity Reservations](#ec2-capacity-reservations)
+  - [Which purchasing option is right for my use case?](#which-purchasing-option-is-right-for-my-use-case)
+    - [EC2 Instance Launch Types Comparison](#ec2-instance-launch-types-comparison)
+  - [Price Comparison Example – m4.large – us-east-1](#price-comparison-example--m4large--us-east-1)
+  - [AWS charges for IPv4 addresses](#aws-charges-for-ipv4-addresses)
+  - [EC2 Spot Instance Requests](#ec2-spot-instance-requests)
+  - [EC2 Spot Instances Pricing](#ec2-spot-instances-pricing)
+  - [How to terminate Spot Instances?](#how-to-terminate-spot-instances)
+  - [Spot Fleets](#spot-fleets)
+  - [Shared Responsibility Model for EC2](#shared-responsibility-model-for-ec2)
+  - [EC2 Section – Summary](#ec2-section--summary)
 
 ## What is Amazon EC2?
 
@@ -498,7 +502,64 @@ ssh -i <location/to/your/downloaded/EC2Tutorial.pem/file> ec2-user@<EC2InstanceP
 - What about IPv6?
   - The whole idea behind these charges for AWS is that they are trying to migrate everything to IPv6, where it is a bit easier to have them at scale.
   - However, many internet providers around the world do not support IPv6 yet.
-- If you want to see your IP addresses, you can do so by going to **IPAM (Amazon VPC IP Address Manager)** and you can monitor all your IP addresses in your account and get some information under **Public IP Insights**.
+- If you want to see your IP addresses:
+  - you can do so by going to **IPAM (Amazon VPC IP Address Manager)** and you can monitor all your IP addresses in your account and get some information under **Public IP Insights**.
+  - Nice article here: https://repost.aws/articles/ARknH_OR0cTvqoTfJrVGaB8A/why-am-i-seeingcharges-
+for-public-ipv4-addresses-when-i-am-under-the-aws-free-tier
+
+## EC2 Spot Instance Requests
+
+* Can get a discount of up to 90% compared to On-demand
+* How does that work? We define a **max spot price** that we're willing to pay for that spot instance. As long as the instance is having a **spot price < the max price we're willing to pay**, then we keep that instance.
+  * The hourly spot price varies based on offer and capacity.
+  * And if somehow the **current spot price > your max price you have defined**, then you have two options. For these two options, you have a two minutes grace period. That gives you a little bit of time to do these things. The options can be either you're stopping your instance, that means that you shut down everything you are doing then you stop your instance. And, if one day the spot price goes below your max price, then you can restart your instance and continue where you left it off or if you don't need the state on your EC2 instance, you can just choose to terminate your instance and let it go. And then that would assume that anytime you would restart your work, you can start with a fresh new EC2 instance
+* Other strategy: **Spot Block**
+  * If you don't want your spot instance to be reclaimed by AWS, you can use a spot block. And the spot block is when you block a spot instance for a specified timeframe. This can be between 1 to 6 hours, and you get that block without any interruption, at least on paper because in the documentation-- but it's really rare "block" spot instance during a specified time frame (1 to 6 hours) without interruptions.
+  * In rare situations, the instance may be reclaimed but overall, when you consider a spot block the instance will not be reclaimed, that's the whole purpose of the spot block.
+* **Used for batch jobs, data analysis, or workloads that are resilient to failures.**
+* **Not great for critical jobs or databases.**
+
+## EC2 Spot Instances Pricing
+
+![EC2 Spot Instances Pricing](../images/EC2_Spot_Instances_Pricing.PNG)
+
+* This is a graph that is obtained directly from the AWS console. As you can see, this gives us the price for a m4 large instance over three months in the spot zone. So, you have six lines for us-east-1.
+* You have six AZs. So, 6 prices. So, the spot price does vary based on the AZ you are considering.
+* As you can see, over three months it has varied quite a bit. For example, if you look at that yellow line, it has varied between 0.4 to 0.45, all the way down to almost 0.35 let's say, and so on.
+* Let's assume that you are defining a user defined max price to be this black horizontal bar/dotted line. What you would see is that if the yellow line is above the dotted line, then the current spot price is going to be more than the max price you have defined. In this instance, you are going to lose our spot instance, you have to terminate it or stop it but if the price goes down, that is, if the yellow line goes down our dotted line, that means that you are willing to pay that price. So, you are gaining that spot instance in this meantime. This is how you can optimize the cost of our workload very easily.
+* As you can see, the On-Demand price is $0.10 per hour. That's really, really cheap and then the spot instance price is even cheaper. It is around $0.4. It is a 60% saving in that instance for the spot instance pricing. Lots of savings. 
+* Obviously if you were to define your user defined max price to be something like $0.05 per hour, then no spot instances will be reclaimed because you are always willing to pay more than the actual spot instance price. So, no one can predict how the price goes over time, but as you can see, it can be rather stable, it can fluctuate a little bit but overall, it still provides you huge savings compared to On-Demand.
+
+## How to terminate Spot Instances?
+
+![How To Terminate Spot Instances](../images/How_To_Terminate_Spot_Instances.PNG)
+
+* How do you terminate a spot instance? We have to first understand how a spot request works. For this, let's consider a spot request. With the spot request, you are defining: 
+  * the number of instances you want
+  * the maximum price you are going to pay
+  * the launch specification
+  * the AMI and so on
+  * when your request is valid from and until, but it can be infinite, and 
+  * the request type. 
+* It is very important to understand there are two types of requests:
+  * **One-Time Request:** If it is a one-time request, as soon as your spot request is fulfilled, your instances are going to be launched and then your spot request will go away because it was a one-time request type. In this case, your spot request is going to go away and you are fine. 
+  * **Persistent Request:** that means that we want this number of instances to be valid as long as the spot request is valid from to valid until. That means if somehow your instances do get stopped or interrupted based on the spot price, then your spot request will go back into action and when things can be validated, we will restart spot instances for you. If somehow you stop a spot instance in persistent mode and your spot request is still active, your spot request automatically will be smart enough to restart a launch and instance for you. This is something you can also see in this diagram but I won't spend too much time on it. What you understand out of this is if you want to cancel a spot request, it needs to be in the open state, the active state, or the disabled state. Basically, it is not failed, it is not canceled, or it is not closed. 
+* When you want to cancel a spot request, it is not going to terminate any instances that you have launched from before. It is still your responsibility to terminate these instances and not the responsibility of AWS. 
+* So as such, if you want to terminate spot instances for good and not have them relaunch, you need to first cancel the spot request, then you terminate the associated spot instances. Because if you were to terminate the spot instances first, remember it goes back into the spot request and the spot request says, "Okay, you wanted six instances, but I can see you have zero right now. So, I am going to launch six instances for you." Again, the right order to cancel and to terminate spot instances is to first cancel the spot request to make sure that no new instances will be launched by AWS and then you terminate the associated spot instances. 
+
+## Spot Fleets
+
+* This is the ultimate way to save money. This is a way to define for you to get a set of spot instances and optionally On-Demand Instances, that is why it is called a **fleet**. 
+* The spot fleet will try its best to meet the target capacity with the price constraints you defined.
+  * It will launch from possible launch pools. It can have different instance types, different OS, and availability zones. You're going to define multiple launch pools, multiple instance types, multiple everything. 
+  * Then the fleet will choose the best and most appropriate launch pool for you. 
+  * When your spot fleet either reaches your budget or reaches the capacity you wanted, then it will stop launching instances. 
+* You define a strategy to allocate spot instances in your spot fleet, and that is something to remember. 
+  * **lowest price**: This is going to the most popular one going into the exam, which is that the spot fleet will launch instances from the pool that has the lowest price and that gives you a lot of cost optimization and this is a **great option if you have a very short workload**.
+  * **diversified**: In this case, the launch in the spot instances will be distributed across all the pools that you have defined from before, which is **great for availability and long workloads** because if one pool goes away, then your other pools are still active.
+  * **capacity optimized**: You have a pool with the optimal capacity for the number of instances you want. 
+  * **price capacity optimized**: which is first choosing the pool with the highest capacity available and then select within that, the one that has the lowest price, which is the best choice for most workloads. 
+* The idea is that spot fleets can be complicated, but what you have to remember is that using the spot fleet, you're able to define multiple launch pools and multiple instance types until you're just interesting in raw power. Then if you use the lowest price discounts or the lowest price strategy for spot fleets, then the spot fleets will automatically request the spot instances with the lowest price for us. Spot fleets gives us an extra saving based on spot instances because it is smart enough to choose the right spot instance pool to allow us to get the maximum amount of savings. This is the benefits of spot fleets. Again, you need to understand the difference here of doing a very simple spot instance request where you know exactly the type of instance you want and the AZ you want to using a spot fleet and saying, "Okay, you can choose all these instance types in all these AZ, and what I need from you is to give me the lowest price". This gives you a lot of insights into how spot fleets and spot instances are different.
 
 ## Shared Responsibility Model for EC2
 
